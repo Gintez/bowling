@@ -1,0 +1,27 @@
+{
+  "name": "bowling",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gintez/bowling.git"
+  },
+  "keywords": [
+    "bowling"
+  ],
+  "author": "ginte and giedrius",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gintez/bowling/issues"
+  },
+  "homepage": "https://github.com/Gintez/bowling#readme",
+  "devDependencies": {
+    "mocha": "^4.0.1",
+    "should": "^13.1.3"
+  }
+}
