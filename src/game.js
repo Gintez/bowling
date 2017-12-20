@@ -1,5 +1,6 @@
 'use strict';
 const { createFrame } = require('./frame');
+const { STRIKE, LAST_FRAME } = require('./constants');
 
 function createGame() {
 
@@ -8,20 +9,26 @@ function createGame() {
     function roll(pins) {
         validate(pins);
         currentFrame.addRoll(pins);
-        if (currentFrame.getResult() === 10) {
-            currentFrame = createFrame(2);
-        }
-        if (currentFrame.getCurrentRoll() === 2) {
-            currentFrame = createFrame(2);
-        }
+        changeFrame();
+
         return pins;
+    }
+
+    function changeFrame() {
+        if (shouldChangeFrame()) {
+            currentFrame = createFrame(getCurrentFrame() + 1);
+        }
+    }
+
+    function shouldChangeFrame() {
+        return currentFrame.isComplete() && getCurrentFrame() !== LAST_FRAME;
     }
 
     function validate(pins) {
         if (pins < 0) {
             throw new Error("Can't roll negative");
         }
-        if (pins > 10) {
+        if (pins > STRIKE) {
             throw new Error("Can't roll more than 10");
         }
     }
@@ -30,7 +37,11 @@ function createGame() {
         return currentFrame.getId();
     }
 
-    return { roll, getCurrentFrame }
+    function isComplete() {
+        return getCurrentFrame() === LAST_FRAME && currentFrame.isComplete();
+    }
+
+    return { roll, getCurrentFrame, isComplete }
 }
 
 module.exports = { createGame };

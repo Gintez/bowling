@@ -1,5 +1,7 @@
 'use strict';
 
+const { STRIKE, LAST_FRAME } = require('./constants');
+
 function createFrame(id) {
     const rolls = [];
     const $id = id;
@@ -8,7 +10,7 @@ function createFrame(id) {
         if (rolls.length === 2) {
             throw new Error("Can't roll more than 2 times");
         }
-        if (getResult() === 10) {
+        if (getResult() === STRIKE) {
             throw new Error("Can't roll after strike");
         }
         return rolls.push(roll);
@@ -24,7 +26,11 @@ function createFrame(id) {
         return $id;
     }
 
-    return { addRoll, getResult, getId };
+    function isComplete() {
+       return getResult() === STRIKE || rolls.length === 2;
+    }
+
+    return { addRoll, getResult, getId, isComplete };
 }
 
 module.exports = {
