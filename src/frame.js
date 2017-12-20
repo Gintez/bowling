@@ -7,13 +7,17 @@ function createFrame(id) {
     const $id = id;
 
     function addRoll(roll) {
-        if (rolls.length === 2) {
+        validate();
+        return rolls.push(roll);
+    }
+
+    function validate() {
+        if (isRolledTwice()) {
             throw new Error("Can't roll more than 2 times");
         }
-        if (getResult() === STRIKE) {
+        if (isStrike()) {
             throw new Error("Can't roll after strike");
         }
-        return rolls.push(roll);
     }
 
     function getResult() {
@@ -27,7 +31,15 @@ function createFrame(id) {
     }
 
     function isComplete() {
-       return getResult() === STRIKE || rolls.length === 2;
+       return isStrike() || isRolledTwice();
+    }
+
+    function isRolledTwice() {
+        return rolls.length === 2;
+    } 
+
+    function isStrike() {
+        return getResult() === STRIKE;
     }
 
     return { addRoll, getResult, getId, isComplete };
