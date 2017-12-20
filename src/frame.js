@@ -1,7 +1,8 @@
 'use strict';
 
-function createFrame() {
+function createFrame(id) {
     const rolls = [];
+    const $id = id;
 
     function addRoll(roll) {
         if (rolls.length === 2) {
@@ -19,7 +20,11 @@ function createFrame() {
         }, 0);
     }
 
-    return { addRoll, getResult };
+    function getId() {
+        return $id;
+    }
+
+    return { addRoll, getResult, getId };
 }
 
 module.exports = {

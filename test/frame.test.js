@@ -16,7 +16,7 @@ describe('frame', function () {
     describe('#createFrame()', function () {
         it('should create a new frame', function () {
             frame.should.be.type('object');
-            frame.should.have.properties(['addRoll', 'getResult']);
+            frame.should.have.properties(['addRoll', 'getResult', 'getId']);
         });
         describe('#addRoll()', function () {
             it('should return length of rolls', function () {
@@ -47,6 +47,21 @@ describe('frame', function () {
                 frame.addRoll(5);
                 frame.addRoll(2);
                 frame.getResult().should.equal(7);
+            });
+        });
+        describe('#getId()', function () {
+            it('should return frame id', function() {
+                frame = createFrame(2);
+                frame.getId().should.equal(2);
+            });
+        });
+        // TODO: follow which roll it is for condition in game.js
+        describe('#getCurrentRoll()', function () {
+            it('should be 1 initially', function() {
+                frame.getCurrentRoll().should.equal(1);
+            });
+            it('should be 2 after adding a roll', function() {
+                frame.getCurrentRoll().should.equal(1);
             });
         });
     });

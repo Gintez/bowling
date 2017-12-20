@@ -1,9 +1,19 @@
 'use strict';
+const { createFrame } = require('./frame');
 
 function createGame() {
 
+    let currentFrame = createFrame(1);
+
     function roll(pins) {
         validate(pins);
+        currentFrame.addRoll(pins);
+        if (currentFrame.getResult() === 10) {
+            currentFrame = createFrame(2);
+        }
+        if (currentFrame.getCurrentRoll() === 2) {
+            currentFrame = createFrame(2);
+        }
         return pins;
     }
 
@@ -16,7 +26,11 @@ function createGame() {
         }
     }
 
-    return { roll }
+    function getCurrentFrame() {
+        return currentFrame.getId();
+    }
+
+    return { roll, getCurrentFrame }
 }
 
 module.exports = { createGame };
