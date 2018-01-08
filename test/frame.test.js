@@ -52,24 +52,24 @@ describe('frame', function () {
             });
         });
         describe('#getId()', function () {
-            it('should return frame id', function() {
+            it('should return frame id', function () {
                 frame = createFrame(2);
                 frame.getId().should.equal(2);
             });
         });
         describe('#isComplete()', function () {
-            it('should be false initially', function() {
+            it('should be false initially', function () {
                 frame.isComplete().should.equal(false);
             });
-            it('should be false after rolling 6', function() {
+            it('should be false after rolling 6', function () {
                 frame.addRoll(6);
                 frame.isComplete().should.equal(false);
             });
-            it('should be true after rolling strike', function() {
+            it('should be true after rolling strike', function () {
                 frame.addRoll(STRIKE);
                 frame.isComplete().should.equal(true);
             });
-            it('should be true after rolling twice', function() {
+            it('should be true after rolling twice', function () {
                 frame.addRoll(5);
                 frame.addRoll(4);
                 frame.isComplete().should.equal(true);

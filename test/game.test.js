@@ -3,7 +3,7 @@
 const assert = require('assert');
 const should = require('should');
 
-const { createGame } = require('../src/game');
+const { createGame, SimpleDate } = require('../src/game');
 const { STRIKE } = require('../src/constants');
 
 describe('game', function () {
@@ -16,7 +16,7 @@ describe('game', function () {
     describe('#createGame()', function () {
         it('should create a new game', function () {
             game.should.be.type('object');
-            game.should.have.properties(['roll', 'getCurrentFrame', 'isComplete']);
+            game.should.have.properties(['roll', 'getCurrentFrame', 'isComplete', 'getFrames']);
         });
         describe('#getCurrentFrame()', function () {
             it('should initially be 1', function () {
@@ -41,6 +41,17 @@ describe('game', function () {
                 game.getCurrentFrame().should.equal(3);
             });
         });
+        describe('#getFrames()', function() {
+            it('should be 1 frame initially', function () {
+                Array.isArray(game.getFrames()).should.equal(true);
+                game.getFrames().length.should.equal(1);
+            });
+            it('should be 3 frames after 2 strikes', function () {
+                game.roll(STRIKE);
+                game.roll(STRIKE);
+                game.getFrames().length.should.equal(3);
+            });
+        });
         describe('#isComplete()', function () {
             it('should be incomplete initially', function () {
                 game.isComplete().should.equal(false);
@@ -51,7 +62,7 @@ describe('game', function () {
                 game.isComplete().should.equal(false);
             });
             it('should be complete after 20 rolls', function() {
-                [...Array(20)].forEach(() => game.roll(2));
+                completeGame();
                 game.isComplete().should.equal(true);
             });
         });
@@ -66,7 +77,15 @@ describe('game', function () {
             it('should not knock down more than 10', function () {
                 assert.throws(() => game.roll(11), Error, "Can't roll more than 10");
             });
+            it('should suggest new game when game is complete', function () {
+                completeGame();
+                assert.throws(() => game.roll(2), Error, "Game is complete. Start a new game")
+            });
         });
+
+        function completeGame() {
+            [...new Array(20)].forEach(() => game.roll(2));
+        }
     });
 });
 
