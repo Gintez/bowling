@@ -1,15 +1,16 @@
 'use strict';
 const { createFrame } = require('./frame');
 const { STRIKE, LAST_FRAME } = require('./constants');
+const uuidv4 = require('uuid/v4');
 
-function createGame() {
-
-    let currentFrame = createFrame(1);
-    const frames = [ currentFrame ];
+function createGame({frames, currentFrameId } = { frames: [ createFrame({ id: 1 }) ], currentFrameId: 1 }) {
+    
+    let $frames = frames;
+    let $currentFrameId = currentFrameId;
 
     function roll(pins) {
         validate(pins);
-        currentFrame.addRoll(pins);
+        getCurrentFrame().addRoll(pins);
         changeFrame();
 
         return pins;
@@ -17,13 +18,13 @@ function createGame() {
 
     function changeFrame() {
         if (shouldChangeFrame()) {
-            currentFrame = createFrame(getCurrentFrame() + 1);
-            frames.push(currentFrame);
+            $currentFrameId = $currentFrameId + 1;
+            $frames.push(createFrame({ id: $currentFrameId }));
         }
     }
 
     function shouldChangeFrame() {
-        return currentFrame.isComplete() && getCurrentFrame() !== LAST_FRAME;
+        return getCurrentFrame().isComplete() && $currentFrameId !== LAST_FRAME;
     }
 
     function validate(pins) {
@@ -39,29 +40,18 @@ function createGame() {
     }
 
     function getCurrentFrame() {
-        return currentFrame.getId();
+        return $frames.find((frame) => frame.getId() === $currentFrameId);
     }
 
     function isComplete() {
-        return getCurrentFrame() === LAST_FRAME && currentFrame.isComplete();
+        return $currentFrameId === LAST_FRAME && getCurrentFrame().isComplete();
     }
 
     function getFrames() {
-        return frames.slice();
+        return $frames.slice();
     }
 
     return { roll, getCurrentFrame, isComplete, getFrames };
 }
 
-class SimpleDate {
-
-    constructor(day) {
-        // Check that (year, month, day) is a valid date
-        // ...
-
-        // If it is, use it to initialize "this" date;
-        this._day = day;
-    }
-}
-
-module.exports = { createGame, SimpleDate };
+module.exports = { createGame };

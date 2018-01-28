@@ -53,7 +53,7 @@ describe('frame', function () {
         });
         describe('#getId()', function () {
             it('should return frame id', function () {
-                frame = createFrame(2);
+                frame = createFrame({ id: 2 });
                 frame.getId().should.equal(2);
             });
         });

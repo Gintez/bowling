@@ -3,7 +3,7 @@
 const assert = require('assert');
 const should = require('should');
 
-const { createGame, SimpleDate } = require('../src/game');
+const { createGame } = require('../src/game');
 const { STRIKE } = require('../src/constants');
 
 describe('game', function () {
@@ -20,25 +20,25 @@ describe('game', function () {
         });
         describe('#getCurrentFrame()', function () {
             it('should initially be 1', function () {
-                game.getCurrentFrame().should.equal(1);
+                game.getCurrentFrame().getId().should.equal(1);
             });
             it('should be 2 after first strike', function () {
                 game.roll(STRIKE);
-                game.getCurrentFrame().should.equal(2);
+                game.getCurrentFrame().getId().should.equal(2);
             });
             it('should be 1 after rolling once without strike', function () {
                 game.roll(5);
-                game.getCurrentFrame().should.equal(1);
+                game.getCurrentFrame().getId().should.equal(1);
             });
             it('should be 2 after 2 rolls without strike', function () {
                 game.roll(1);
                 game.roll(8);
-                game.getCurrentFrame().should.equal(2);
+                game.getCurrentFrame().getId().should.equal(2);
             });
             it('should be 3 after 2 strikes', function () {
                 game.roll(STRIKE);
                 game.roll(STRIKE);
-                game.getCurrentFrame().should.equal(3);
+                game.getCurrentFrame().getId().should.equal(3);
             });
         });
         describe('#getFrames()', function() {

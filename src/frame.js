@@ -2,7 +2,7 @@
 
 const { STRIKE, LAST_FRAME } = require('./constants');
 
-function createFrame(id) {
+function createFrame({ id } = { id: 1 }) {
     const rolls = [];
     const $id = id;
 
